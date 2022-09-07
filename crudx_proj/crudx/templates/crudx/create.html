@@ -1,0 +1,116 @@
+<style>
+    #create-form-select, #update-form-color-select{
+        /* outline: none;
+        border-bottom: 1px solid var(green); */
+        border-radius: 0.3em;
+        text-align: center;
+        color: var(--green);background: var(--dark-green);
+    }
+    #blue{
+        color: cyan;
+        background: var(--dark-cyan);
+    }
+    #green{
+        color: var(--green);
+        background: var(--dark-green);
+
+    }
+    #yellow{
+        color: yellow;
+        background: var(--dark-yellow);
+    }
+    #orange{
+        color: orange;
+        background: var(--dark-orange);
+    }
+
+    #blue:hover{
+        font-weight: bold;
+        background: var(--dark-cyan);
+    }
+    #green:hover{
+        font-weight: bold;
+        background: var(--dark-green);
+    }
+    #yellow:hover{
+        font-weight: bold;
+        background: var(--dark-yellow);
+    }
+    #orange:hover{
+        font-weight: bold;
+        background: var(--dark-orange);
+    }
+</style>
+<script>
+    function set_select_color(selector){
+        let color_select = document.getElementById(selector)
+        let color = color_select.value
+        let style = color_select.style
+
+        console.log(color_select, color)
+
+        if( color == "green" ){
+            style.color = "#00d400";
+            style.border.color = "#00d400";
+            style.background = "#004900";
+        }
+        if( color == "blue" ){
+            style.color = "cyan";
+            style.border.color = "cyan";
+            style.background = "#005252";
+        }
+        else if( color == "yellow" ){
+            style.color = "yellow";
+            style.border.color = "yellow";
+            style.background = "#494900";
+        }
+        else if( color == "orange" ){
+            style.color = "orange";
+            style.border.color = "orange";
+            style.background = "#452d00";
+        }
+    }
+</script>
+
+<div class="wrapper justify-content-center align-items-center" >
+    <form class="create-form" action="/create" method="post">
+        <div class="input-group mb-3 create-title-wrapper">
+            <span class="input-label"> Title: </span>
+            <input type="text" name="title" id="title" class="text-light"
+             aria-label="Sizing example input"
+            aria-describedby="1" placeholder="Enter a short title" required />
+        </div>
+
+        <div class="input-group mb-3">
+        <span class="input-label"> Duration: </span> 
+            <span class="input-wrapper">
+                <input type="number" class="time" name="hrs" min="0" max="99"
+                aria-label="Sizing example input" size="2"
+                aria-describedby="3" placeholder="0 to 99 only" /> <span class="input-label">  hrs </span> 
+                <input type="number" class="time" name="min" min="0" max="59"
+                aria-label="Sizing example input" size="2"
+                aria-describedby="3" placeholder="0 to 59 only" /> <span class="input-label">  min </span>
+            </span>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-label"> Deadline: </span>
+            <input type="date" name="deadline" id="deadline"
+             aria-label="Sizing example input" size="12"
+            aria-describedby="4" placeholder="Enter date of deadline" />
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-label"> Priority: </span>
+            <select name="color" id="create-form-select" onclick="set_select_color('create-form-select')">
+                <option value="blue"  id="blue">low</option>
+                <option value="green" id="green" selected="selected">medium</option selected="selected">
+                <option value="yellow"  id="yellow">high</option>
+                <option value="orange" id="orange">urgent </option>
+              </select>
+        </div>
+        <div class="modal-footer justify-content-center " style="margin-top: 2em;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary my-btn signup-btn">Save task</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,185 @@
+<style>
+  
+  .model-body{
+    padding: 0 !important;
+  }
+  .update-btn, .update-btn:focus, .update-btn:hover{
+    display: none;
+    background-color: #ffff85;
+    color: var(--dark-yellow) !important;
+    font-size: 120%;
+    text-shadow: 1px 1px 0.5 var(--dark-yellow);
+    padding: 0.2em 0.3em;
+
+    /* 
+    border: none;
+    border-radius: 0.25em;
+    margin: 0.5em auto;
+    width: 3em; 
+    box-shadow: none; */
+  }
+  .title{
+    color: yellow;
+  }
+  #title-drop option{
+    width: 60% !important;
+    color: white !important;
+  }
+  .update-form-yellow{
+    box-shadow: none;
+    /* background: var(--dark-yellow) !important; 
+    box-shadow: -13px -13px 26px #2c3000, 13px 13px 26px #6a7400 !important;*/
+    background: rgb(33,37,41);
+  }
+  .update-input-label {
+    margin: 0.5rem 0.5rem !important;
+  }
+  .bg-dark-yellow{
+    background: var(--dark-yellow) !important; 
+  }
+  #update-title{
+    color: rgb(234, 248, 184) !important;
+    width: 83%;
+  }
+  .update-form-yellow input, .update-form-yellow input:focus{
+    color: rgb(234, 248, 184);
+    padding: 0.1rem 0.2rem;
+    background: transparent !important;
+    border-color: transparent;
+    border-bottom: 2px solid rgb(179 146 1);
+  }
+
+  .update-form-yellow input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(234, 248, 184) !important;
+    opacity: 1 !important; /* Firefox */
+  }
+
+  .update-form-yellow input::-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgb(234, 248, 184) !important;
+    opacity: 1;
+  }
+
+  .update-form-yellow input::-ms-input-placeholder { /* Microsoft Edge */
+    color: rgb(234, 248, 184) !important;
+    opacity: 1;
+  }
+</style>
+
+<script>
+
+function updateTask(task){
+  console.log(task)
+  let id = task.id
+  updateForm = document.getElementById('update-form')
+  document.getElementById('update-title').value = task.title
+  document.getElementById('update-hrs').value = task.hrs
+  document.getElementById('update-min').value = task.min
+  let year = task.deadline.year
+  let month = task.deadline.month
+  let day = task.deadline.day
+  if (month.length == 1){ month = '0'+month}
+  if (day.length == 1){ day = '0'+day}
+  document.getElementById('update-deadline').value = year+'-'+month+'-'+day ;
+
+  document.getElementById('update-form-color-select').value = task.color;
+  set_select_color('update-form-color-select')
+  
+  // console.log("STATUS >>> ",document.getElementById('update-status') )
+  chk_box = document.getElementById('update-status')
+  if(task.status == 'True'){
+    chk_box.checked = true;
+    chk_box.value = "True";
+    console.log( chk_box.value )
+  } 
+  else{
+    chk_box.checked = false;
+    chk_box.value = "False";
+    console.log( chk_box.value )
+  }
+  
+  updateForm.action = '/update/'+id.toString();
+}
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="update" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateLabel" aria-hidden="true">
+  <div class="modal-dialog bg-dark text-light rounded-4" style="margin-top: 12%;">
+    <div class="modal-content bg-dark text-light rounded-4">
+      <div class="modal-header border-warning text-warning">
+        <h5 class="modal-title opacity-75 f-bold" id="updateLabel"> Update Form </h5>
+        <button type="button" class="btn-close" style="filter: invert(1);" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" >
+
+        <!-- Form for updating the data -->
+        <form id="update-form" class="create-form update-form-yellow" method="post">
+            {% if tasks %}
+
+            <!-- Task selection dropdown -->
+            <!-- 
+              <select id="title-drop" class="bg-dark-yellow text-warning w-100 rounded p-2" onclick="setValuesInUpdateForm()">
+                {% for task in tasks reversed %}
+                  <option class='short' data-limit='37' value="{{task.id}}" id="{{task.id}}">{{forloop.counter}}. {{task.info}}</option>
+                {% endfor %}
+              </select>
+              {% else%}
+                <script> 
+                // document.getElementById("update-btn").disabled = true;
+                document.getElementById("update-btn-wrapper").style.display = "none";
+                </script>
+              {% endif %}
+            -->   
+
+          <div class="input-group mb-3 create-title-wrapper">
+            <span class="update-input-label text-warning"> Title: </span>
+            <input type="text" name="title" id="update-title" class="text-light"
+            aria-label="Sizing example input"
+            aria-describedby="1" placeholder="Enter a short title" required />
+        </div>
+          <div class="input-group mb-3" style="color:yellow;">
+          <span class="update-input-label text-warning"> Duration: </span> 
+              <span class="input-wrapper">
+                  <input type="number" class="time" name="hrs" id="update-hrs" min="0" max="99"
+                  aria-label="Sizing example input" size="2"
+                  aria-describedby="3" placeholder="0 to 99 only" /> <span class="update-input-label text-warning">  hrs </span> 
+                  <input type="number" class="time" name="min" id="update-min" min="0" max="59"
+                  aria-label="Sizing example input" size="2"
+                  aria-describedby="3" placeholder="0 to 59 only" /> <span class="update-input-label text-warning">  min </span>
+              </span>
+          </div>
+
+          <div class="input-group mb-3">
+              <span class="update-input-label text-warning"> Deadline: </span>
+              <input type="date" name="deadline" id="update-deadline"
+              aria-label="Sizing example input" size="12"
+              aria-describedby="4" placeholder="Enter date of deadline" />
+          </div>
+          <div style="display:inline;" class="input-group mb-3">
+              <span class="update-input-label text-warning"> Priority: </span>
+              <select name="color" id="update-form-color-select" onclick="set_select_color('update-form-color-select')">
+                  <option value="blue"  id="blue" onclick="set_select_color">low</option>
+                  <option value="green" id="green" onclick="set_select_color" selected="selected">medium</option selected="selected">
+                  <option value="yellow" onclick="set_select_color"  id="yellow">high</option>
+                  <option value="orange" id="orange" onclick="set_select_color">urgent </option>
+                </select>
+          </div>
+          <div style="display:inline; margin-left: 2em;" class="input-group mb-3">
+              <span class="update-input-label text-warning"> Status: </span>
+              <input type="checkbox" style="height: 1em; width:1em; accent-color:yellow;" name="status" value="True" id="update-status"/>  
+              <!-- <select name="" name="status" id="update-status">
+                <option value="True">Done</option>
+                <option value="Not done">False</option> -->
+              </select>
+          </div>
+          {% csrf_token %}
+          <div class="modal-footer justify-content-center">
+            <button type="button bg-gray" class="btn text-white bg-none" style="border:2px solid white;" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary my-btn login-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

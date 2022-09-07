@@ -1,0 +1,95 @@
+<script>
+  function handleStatusBox(id, status, color) {
+    status_tick = document.getElementById('status-'+id);
+    status_bg = document.getElementById('status-bg-'+id);
+    status_bg.classList.add("status-box-" + color)
+
+    if (status == "True"){
+      console.log(status);
+      console.log(status_bg);
+      status_tick.classList.add("bi-check-" + color);
+      console.log(status_tick.classList);
+    }
+    else{
+      status_tick.classList.remove("bi-check-" + color)
+      status_tick.style.color = status_bg.style.backgroundColor;
+    }
+  }
+  function setTaskColor(color, row_id) {
+    row = document.getElementById(row_id);
+    row.classList.add("table-row-" + color);
+    row.getElementsByClassName("table-sub-row1")[0].classList.add("table-sub-row1-" + color);
+  }
+</script>
+
+<div class="my-table">
+  {% if tasks %} 
+    {% for task in tasks reversed%}
+    <div id="row-{{forloop.counter}}" class="table-row">
+
+      <!-- Row 1 -->
+      <div class="table-sub-row1">
+        <li>
+        <strong>
+          <span class="table-title table-item-margin">
+            {{task.info}}
+          </span>
+        </strong>
+        </li>
+
+        <span>
+        <!-- Delete btn -->
+        <button style="background-color: pink;" class="btn delete-btn" onclick="confirmDelete({{task.id}}, '{{task.info}}')">
+          <i style="color:red;" id="del-{{task.id}}" class="bi bi-trash delete-restore-icons" > </i>
+        </button>
+
+        <!-- Update btn -->
+        <button type="button" class="btn update-btn" data-bs-toggle="modal" data-bs-target="#update" 
+        onclick="updateTask(
+            {id: {{task.id}} , 
+            title: '{{task.info}}' ,
+            hrs: {{task.duration_hrs}} ,
+            min: {{task.duration_min}} ,
+            deadline: { day: '{{task.duedate.day}}' ,
+                        month: '{{task.duedate.month}}' ,
+                        year: '{{task.duedate.year}}'
+                      } ,
+            status: '{{task.status}}' ,
+            color: '{{task.color}}'
+            })">
+          <i id="update-{{task.id}}" class="bi bi-pencil-square"></i>
+        </button>
+        </span>
+
+      <!-- Row 2 -->
+      </div>
+      <div class="table-sub-row2">
+        <span class="table-item-margin time-reqd">
+          Time required: <strong> {{task.duration_hrs}} </strong> hrs <strong> {{task.duration_min}} </strong> min
+        </span> 
+        <span class="table-item-margin due">Due: <strong> {{task.duedate}} </strong> </span>
+
+        <!-- Status Custom Check Box -->
+        <span class="status-wrapper">
+          <span> Status: </span>
+          <span id="status-bg-{{forloop.counter}}" class="status-box">
+            <svg id="status-{{forloop.counter}}" class="bi-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+              fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+              <path
+                d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+  <script>
+    // {{forloop.counter}} will be concatenated to 'status-' and 'status-bg-' to get respective ids
+    handleStatusBox("{{forloop.counter}}", "{{task.status}}", "{{task.color}}");
+    setTaskColor("{{task.color}}", "row-{{forloop.counter}}");
+  </script>
+  {% endfor %} 
+  
+  {% else %}
+  <div style="font-size: 2em; height:60vh; color: rgba(255,255,255,0.3); margin: 0.5em" class="d-flex justify-content-center align-items-center"> Please add a task from create section</div>
+  {% endif %}
+</div>

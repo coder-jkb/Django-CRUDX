@@ -1,0 +1,186 @@
+{% extends "crudx/index.html" %}
+{% block title %}Welome to CRUDX{% endblock %}
+{% block content %}
+
+<!-- <div class="welcome-wrapper"> -->
+  <h1 class="m-2 text-center">
+      Welcome to
+      <span style="color: cyan">C</span>
+      <span style="color: var(--green)">R</span>
+      <span style="color: yellow">U</span>
+      <span style="color: orange">D</span> –
+      <span style="color: red">X</span>
+  </h1>
+
+  <div class="d-flex flex-row justify-content-center mx-auto">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary shadow-none m-3 my-btn signup-btn text-black" data-bs-toggle="modal" data-bs-target="#signUp">
+        Signup
+      </button>
+      <button type="button" class="btn btn-primary shadow-none m-3 my-btn login-btn text-black" data-bs-toggle="modal" data-bs-target="#login">
+        Login
+      </button>
+    </div>
+
+  <div class="home-text">
+  
+  <h3 align="center">🌐 A web application that helps you manage your tasks 📜</h3>
+  <hr>
+    <ol>
+      <h5>📝 You can  <span style="color: cyan"><strong>C</strong>reate</span> a task and set</h5>
+        <ul>
+          <li>Duration ⏳,</li>
+          <li>Deadlines 📆,</li>
+          <li>Priority 🟡</li>
+        </ul>
+      
+      <h5>👀 Simply view it in  <span style="color: var(--green)"><strong>R</strong>ead</span> section</h5>
+      
+      <h5>⬆️ In  <span style="color: yellow"><strong>U</strong>pdate</span> section, you can </h5>
+        <ul>
+          <li>modify details of any task's by changing the <strong>Title, Duration, Duedate, Priority, etc...</strong></li>
+          <li>Set a task as done by modifying its <strong>✅ Status</strong></li>
+        </ul>
+      
+      <h5>🗑️ Finally,  <span style="color: orange"><strong>D</strong>elete</span> the task in its section when you no longer want it in the list
+      </h5>
+    </ol>
+
+    <hr>
+    <h4>
+      ➕ Additions features to be added are:
+    </h4>
+      <ul>
+        <li>🔍 Search tasks by title.</li> 
+        <li>📊 Progress stats of task done/not done in the current list.</li> 
+        <li>📋 Sorting and filtering on due/deadline/priority</li> 
+        <li>☑️ Select multiple tasks to delete at once</li>  
+      </ul>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal fade" id="signUp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="signUpLabel" aria-hidden="true">
+    <div class="modal-dialog bg-dark text-light rounded-4" style="margin-top: 9%;">
+      <div class="modal-content bg-dark text-light rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signUpLabel">Sign up</h5>
+          <button type="button" class="btn-close" style="filter: invert(1);" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/signup" method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <!-- Name -->
+              <!-- <span class="input-group-text text-light" style="background-color: #404040" id="1"> -->
+                <!-- First Name</span> -->
+              <input type="text" name="fname" class="form-control shadow-none text-light"
+                style="background-color: #404040" aria-label="Sizing example input" 
+                aria-describedby="1" placeholder="First Name" required />
+
+              <!-- <span class="input-group-text text-light" style="background-color: #404040" id="2"> -->
+                <!-- Last Name</span> -->
+              <input type="text" name="lname" class="form-control shadow-none text-light"
+                style="background-color: #404040" aria-label="Sizing example input" 
+                aria-describedby="2" placeholder="Last Name" required/>
+            </div>
+
+            <!-- Email -->
+            <div class="input-group mb-3">
+              <!-- <span class="input-group-text text-light" style="background-color: #404040" id="3"> -->
+                <!-- Email</span> -->
+              <input type="email" name="email" class="form-control shadow-none text-light"
+                style="background-color: #404040" aria-label="Sizing example input" 
+                aria-describedby="3" placeholder="E-mail (username@domain.com)" required/>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group mb-3">
+              <!-- <span class="input-group-text text-light" style="background-color: #404040" id="4"> -->
+                <!-- Password</span> -->
+              <input type="password" name="pass1" class="form-control shadow-none text-light"
+                style="background-color: #404040" aria-label="Sizing example input" 
+                aria-describedby="4" placeholder="Enter password" required/>
+            </div>
+
+            <div class="input-group mb-3">
+              <!-- <span class="input-group-text text-light" style="background-color: #404040" id="5"> -->
+                <!-- Confirm Password</span> -->
+              <input type="password" name="pass2" class="form-control shadow-none text-light"
+                style="background-color: #404040" aria-label="Sizing example input" 
+                aria-describedby="5" placeholder="Confirm password" required/>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+              <button type="submit" class="btn btn-primary my-btn signup-btn">Sign up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="loginLabel" aria-hidden="true">
+    <div class="modal-dialog bg-dark text-light rounded-4" style="margin-top: 12%;">
+      <div class="modal-content bg-dark text-light rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginLabel">Login</h5>
+          <button type="button" class="btn-close" style="filter: invert(1);" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/login" method="post">
+            <!-- Email -->
+            <div class="input-group mb-3">
+              <!-- <span class="input-group-text text-light" style="background-color: #404040;" id="6"> -->
+                <!-- Email</span> -->
+              <input type="email" name="login_email" class="form-control shadow-none text-light"
+                style="background-color: #404040;" aria-label="Sizing example input" 
+                aria-describedby="6" placeholder="E-mail" required/>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group mb-3">
+              <!-- <span class="input-group-text text-light" style="background-color: #404040;" id="7"> -->
+                <!-- Password</span> -->
+              <input type="password" name="login_pass" class="form-control shadow-none text-light"
+                style="background-color: #404040;" aria-label="Sizing example input" 
+                aria-describedby="7" placeholder="Password" required/>
+            </div>
+
+            {% csrf_token %}
+            <div class="modal-footer justify-content-center">
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+              <button type="submit" class="btn btn-primary my-btn login-btn">Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-container">
+    <div style="font-size: 130%; ">
+      <div class="text-center">
+        <span style="margin-right:0.2em;">Made with ❤️ by Jay Bhanushali</span>
+      </div>
+      <div class="text-center">
+      <!--Github-->
+        <a class="github" href="https://github.com/coder-jkb/" >
+          <i class="bi bi-github"></i>
+        </a>  
+      <!--LinkedIn-->
+        <a class="linkedin" href="https://www.linkedin.com/in/jay-bhanushali1792/">
+          <i style="color:#0a66c2;font-size: 130%;" class="bi bi-linkedin"></i>
+        </a> 
+      <!--Mail-->
+        Email: <a href="mailto:jkb17codes@gmail.com" style="color: #98d4ff;"> 
+          jkb17codes@gmail.com</a>
+      </div>
+      <div>
+  </footer>
+ <!-- </div> -->
+
+{% endblock %}

@@ -1,0 +1,39 @@
+<style>
+.delete-btn{
+    display: none;
+    font-size: 120%;
+    padding: 0.2em 0.3em;
+    /* visibility: hidden; 
+    margin: 0.15em;
+    border-radius: 0.25em; */
+} 
+</style>
+<script>
+    function confirmDelete(id, title){
+        // change alert to some other ye no message
+        let delete_confirmed = confirm("Once deleted this cannot be restored.\nAre you sure you want to delete this task:\n👉 "+title);
+        if(delete_confirmed){
+            try {
+                let url = "/delete/"+ id.toString();
+                let form = document.getElementById("delete-form")
+                form.action = url;
+                form.submit();
+                // alert("Deleted!");
+            }
+            catch(err){
+              console.log(err)
+                alert("An error occured! Deletion failed.");
+            }
+        }
+        else{
+            alert("Deletion cancelled!");
+        }
+    }
+</script>
+
+<!-- action=url is added in js -->
+<form id="delete-form" method="post" style="display:none;height:0;">
+<input type="number" value="" id="id-to-del" style="display:none;">
+{% csrf_token %}
+</form>
+{% comment %} <h1>DELETE</h1> {% endcomment %}

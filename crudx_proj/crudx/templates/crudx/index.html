@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{% endblock %}</title>
+
+  {% comment %} <link rel="stylesheet" href="../style.css"> {% endcomment %}
+
+    {% comment %} Bootstrap links {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+
+    {% comment %} bootstrap-icons {% endcomment %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+
+    {% comment %} font links {% endcomment %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&family=Roboto:wght@100;400&display=swap" rel="stylesheet">
+    <style>
+      {% include "crudx/style.css" %}
+    </style>
+</head>
+
+<body>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{message.tags}} rounded-3 alert-dismissible alert-position fade show text-center" 
+        id="newalert" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" id="close-alert" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="progress w-100 bg-transparent">
+          <div class="progress-value bg-{{message.tags}}"></div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% block content%}
+  {% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  /* Set min date contstrain in create form */
+  document.getElementById("deadline").min = new Date().toISOString().split("T")[0];
+
+  /* Close alert message after 4sec */
+  window.setTimeout(function(){
+    let alert = document.getElementById("newalert")
+    let close_alert = document.getElementById("close-alert") 
+    if (close_alert != null){
+      close_alert.click();  }
+  }, 4000);
+    
+  /* Logout (X) tooltip */
+  function show_tool_tip(){
+    let tooltiptext = document.getElementById("tooltiptext") ;
+    let tiptriangle = document.getElementById("tip-triangle") ;
+    tooltiptext.style.visibility = "visible" ;
+    tiptriangle.style.visibility = "visible" ;
+  }
+
+  function hide_tool_tip(){
+    let tooltiptext = document.getElementById("tooltiptext") ;
+    let tiptriangle = document.getElementById("tip-triangle") ;
+
+    tooltiptext.style.visibility = "hidden" ;
+    tiptriangle.style.visibility = "hidden" ;
+  }
+
+
+  let user_span = document.getElementById("user-data");
+  let container = document.getElementById("my-container");
+  let userdata = document.getElementById("user-data") ;
+
+  function changeBG(bgcolor, textcolor, type){  
+    /* Change bg */ 
+
+    container.style.background = bgcolor;
+    container.style.color = textcolor;
+    user_span.style.color = textcolor; 
+
+    /* Change content to diaplay */
+    document.getElementById("C-section").style.display = "none";
+    document.getElementById("R-section").style.display = "none";
+    document.getElementById("U-section").style.display = "none";
+    document.getElementById("D-section").style.display = "none";
+    
+    del_list = document.querySelectorAll(".delete-btn");
+    update_list = document.querySelectorAll(".update-btn");
+
+    if (type=="C"){
+      document.getElementById("C-section").style.display = "flex";
+      user_span.style.display = "flex";
+    }
+    else if (type=="R"){
+      document.getElementById("R-section").style.display = "flex";
+      user_span.style.display = "none";
+      
+      del_list.forEach(ele=>{
+        // ele.style.visibility = "hidden";
+        ele.style.display = "none";
+      });
+
+      update_list.forEach(ele=>{
+        ele.style.display = "none";
+      });
+      
+    }
+    else if (type=="U"){
+      document.getElementById("R-section").style.display = "flex";
+      document.getElementById("U-section").style.display = "flex";
+      user_span.style.display = "none";
+
+      del_list.forEach(ele=>{
+        // ele.style.visibility = "hidden";
+        ele.style.display = "none";
+      });
+
+      update_list.forEach(ele=>{
+        ele.style.display = "flex";
+      });
+    }
+    else {
+      document.getElementById("D-section").style.display = "flex";
+      document.getElementById("R-section").style.display = "flex";
+      user_span.style.display = "none";
+      
+      del_list.forEach(ele=>{
+        // ele.style.visibility = "visible";
+        ele.style.display = "flex";
+      });
+
+      update_list.forEach(ele=>{
+        ele.style.display = "none";
+      });
+    }
+
+  }
+
+  
+</script>
+
+</body>
+
+</html>
